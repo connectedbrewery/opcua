@@ -495,11 +495,11 @@ impl Client {
             let result = session.get_endpoints()?;
             session.disconnect();
             dispose_session(session);
-            
+
             Ok(result)
         }
     }
-    
+
     /// Connects to a discovery server and asks the server for a list of
     /// available server [`ApplicationDescription`].
     ///
@@ -765,7 +765,7 @@ fn dispose_session(session: Session) {
     match Handle::try_current() {
         Ok(handle) => {
             handle.spawn_blocking(move || drop(session));
-        },
+        }
         Err(_) => drop(session),
     }
 }

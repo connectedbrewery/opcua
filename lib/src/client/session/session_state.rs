@@ -468,7 +468,7 @@ impl SessionState {
             {
                 let offset = response.response_header.timestamp - DateTime::now();
 
-               // Make sure to apply the offset to the security token in the current response.
+                // Make sure to apply the offset to the security token in the current response.
                 security_token.created_at = security_token.created_at - offset;
                 // Update the client offset by adding the new offset. When the secure channel is
                 // renewed its already using the client offset calculated when issuing the secure
