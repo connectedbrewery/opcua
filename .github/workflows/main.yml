@@ -1,10 +1,9 @@
 name: OPC UA for Rust
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches:
+      - main
 
 env:
   CARGO_TERM_COLOR: always
@@ -23,13 +22,14 @@ jobs:
           cd integration
           sh ./run.sh
 
-  build-windows:
-    runs-on: windows-latest
-    env:
-      VCPKGRS_DYNAMIC: 1
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build --features test-vendored-openssl
-      - name: Run tests
-        run: cargo test --features test-vendored-openssl --verbose
+  ## Note: We don't rely on windows, so let's save some compute
+  # build-windows:
+  #   runs-on: windows-latest
+  #   env:
+  #     VCPKGRS_DYNAMIC: 1
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Build
+  #       run: cargo build --features test-vendored-openssl
+  #     - name: Run tests
+  #       run: cargo test --features test-vendored-openssl --verbose
