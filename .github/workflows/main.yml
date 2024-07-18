@@ -1,35 +1,51 @@
 name: OPC UA for Rust
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches:
+      - main
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+    name: OPC UA for Rust - ${{ matrix.toolchain }}
+
+    strategy:
+      matrix:
+        toolchain: [ nightly, stable ]
+        platform: [ ubuntu-latest ]
+    runs-on: ${{ matrix.platform }}
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Build
         run: cargo build --features test-vendored-openssl
+
       - name: Run tests
         run: cargo test --features test-vendored-openssl --verbose
+
       - name: Run integration tests
         run: |
           cd integration
           sh ./run.sh
 
-  build-windows:
-    runs-on: windows-latest
-    env:
-      VCPKGRS_DYNAMIC: 1
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build --features test-vendored-openssl
-      - name: Run tests
-        run: cargo test --features test-vendored-openssl --verbose
+  ## Note: We don't rely on windows, so let's save some compute
+  # build-windows:
+  #   runs-on: windows-latest
+  #   env:
+  #     VCPKGRS_DYNAMIC: 1
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Build
+  #       run: cargo build --features test-vendored-openssl
+  #     - name: Run tests
+  #       run: cargo test --features test-vendored-openssl --verbose

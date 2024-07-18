@@ -15,7 +15,9 @@ members = [
     "samples/simple-server",
     "samples/chess-server",
     "samples/discovery-client",
-    "samples/web-client",
+    ## TODO: rollback when actix-web is upgraded in upstream
+    ## https://github.com/locka99/opcua/issues/291
+    # "samples/web-client",
     "samples/event-client",
     "tools/certificate-creator"
 ]
