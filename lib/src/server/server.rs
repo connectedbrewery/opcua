@@ -75,8 +75,6 @@ pub struct Server {
     address_space: Arc<RwLock<AddressSpace>>,
     /// List of open connections
     connections: Arc<RwLock<Connections>>,
-    /// Session manager
-    session_manager: Arc<RwLock<SessionManager>>,
     /// Clear all sessions on transport finished
     clear_sessions_on_finish: bool,
 }
@@ -208,7 +206,6 @@ impl Server {
             address_space,
             certificate_store,
             connections: Arc::new(RwLock::new(Vec::new())),
-            session_manager: Arc::new(RwLock::new(SessionManager::default())),
             clear_sessions_on_finish,
         };
 
@@ -633,7 +630,6 @@ impl Server {
             self.certificate_store.clone(),
             self.server_state.clone(),
             self.address_space.clone(),
-            self.session_manager.clone(),
             self.clear_sessions_on_finish,
         )
     }
